@@ -10,7 +10,7 @@ Then users will have the opportunity to choose in which category they consider t
 
   * Calculate your daily calorie balance 
   * Calculate the calories of the things you ate(if you list them) and tells you how much calories you have left
-  * By given food you have suggests how much you can eat of it and how to combine it to fit to the calories left (still overthinking this one)
+  * By given food suggests how much you can eat of it and how to combine it to fit to the calories left (still overthinking this one)
   * Eventually gives you badges or other motivational stuff to keeps you going
 
 * <b> User categories: </b>
