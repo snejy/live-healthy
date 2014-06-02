@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="/register/" method="post">
+    {% csrf_token %}
+<!--     {{ uform.as_p }}
+    {{ pform.as_p }}  -->
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        <label for="id_email">Email:</label>
+        {{ uform.email }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.password1.errors }}
+        <label for="id_username" >Password:</label>
+        {{ uform.password1 }}
+        </div>
+    <div class="fieldWrapper">
+        {{ form.password2.errors }}
+        <label for="id_username" >Confirm password:</label>
+        {{ uform.password2 }}
+        
+    <div class="fieldWrapper">
+        {{ uform.username.errors }}
+        <label for="id_username" >Username:</label>
+        <!-- <input id="id_email" name="username" type="text" /> -->
+        {{ uform.username }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.sender.errors }}
+        <label for="id_first_name">First name:</label>
+        <!-- input id="id_first_name" name="first_name" type="text" /> -->
+        {{ pform.first_name }}
+    </div>
+    <div class="fieldWrapper">
+        <label for="id_last_name">Last name:</label>
+       <!--  <input id="id_last_name" name="last_name" type="text" /> -->
+       {{ pform.last_name }}
+    </div>
+    <div class="fieldWrapper">
+        <label for="id_gender">Gender:</label>
+        <select id="id_gender" name="gender">
+        <option value="f">female</option>
+        <option value="m">male</option>
+        </select>
+    <div class="fieldWrapper">
+        <label for="id_last_name">Age:</label>
+       <!--  <input id="id_last_name" name="last_name" type="text" /> -->
+       {{ pform.age }}
+    </div>
+    </div>
+    <div class="fieldWrapper">
+        <label for="id_date_of_birth">Date of birth:</label>
+        <!-- <input id="id_date_of_birth" name="date_of_birth" type ='date'/> -->
+        {{ form.date_of_birth }}
+    </div>
+    <div class="fieldWrapper">
+        <label for="id_kilograms">Kilograms</label>
+        <!-- <input id="id_kilograms" name="kilograms"  type="number" value = '60'  />-->
+        {{ pform.kilograms }}
+    </div>
+    <div class="fieldWrapper">
+        <label for="id_height">Height</label>
+        <!-- <input id="id_height" name="height" type="number" /> -->
+        {{ pform.height }}
+    </div>
+    <div class="fieldWrapper">
+        <label for="id_sports">Sport:</label>
+        <select id="id_sports" name="sports">
+        <option value='1.2'>Does not do sport.</option>
+        <option value="1.375">Does sport 1 to 3 times weekly.</option>
+        <option value='1.55'>Does sport 3 to 5 times weekly.</option>
+        <option value='1.725'>Does sport 6 to 7 times weekly.</option>
+        <option value='1.9'>Extreme active: 7 times weekly with additional activities.</option>
+        </select>
+    <p><input type="submit" value="Register" /></p>
+</form> 
+{% endblock %}
