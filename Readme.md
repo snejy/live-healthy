@@ -13,13 +13,7 @@ Then users will have the opportunity to choose in which category they consider t
   * By given food suggests how much you can eat of it and how to combine it to fit to the calories left (still overthinking this one)
   * Eventually gives you badges or other motivational stuff to keeps you going
 
-* <b> User categories: </b>
-The list is not conclusive. 
-
-  * not-so-lazy
-  * lazy
-  * very lazy
-  * the laziest
+* <b> User categories: </b> are depending on the sport activity one does.
 
 Goals for milestone 2
 ==============
