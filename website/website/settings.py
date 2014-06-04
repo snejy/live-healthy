@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# URL of the login page.
+LOGIN_URL = '/login/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/

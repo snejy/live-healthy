@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>Homepage</title>
+    <title>Live healthier today</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
   </head>
 
   <body>
@@ -44,7 +45,20 @@
             <span class="sr-only">Register</span>
             </button>
             </a>
-            <a href='about'>
+            
+          {% if user.is_authenticated%}
+            <a href='/track_calories/'>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only"> Calories for today</span>
+          </button>
+          </a>
+            <a href='/profile/'>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only"> {{ user.username}} Profile</span>
+          </button>
+          </a>
+          {% endif %}
+          <a href='/about/'>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">About us</span>
           </button>
@@ -57,8 +71,12 @@
       <div class="container">
       <br>
       {% if user.is_authenticated %}
-            <div>Hello, {{ user.username }}!</div>
-            <!--<div><a href="logout/">Logout!</a></div>-->
+            <div>You are currently logged in as {{ user.username }}</div>
+            <a href='/logout/'>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Log out</span>
+          </button>
+          </a>
       {% else %}
         <!--  <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form">
@@ -75,7 +93,11 @@
         </div><!-/.navbar-collapse -->
       <!-- </div> -->
     <!-- </div> -->
-      <a href="/login/">Login!</a>
+     <a href='/login/'>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Login</span>
+          </button>
+          </a>
       {% endif %}
         <br>
         <br>
