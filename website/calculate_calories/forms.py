@@ -49,7 +49,7 @@ class UserProfileRegistrationForm(forms.Form):
         (1.725, "Does sport 6 to 7 times weekly."),
         (1.9, "Extreme active: 7 times weekly with additional activities.")
     )
-    sports = forms.ChoiceField(required = True, choices=SPORTS)
+    sports = forms.FloatField(required = True)
 
     def save(self, *args, **kw):
         super(UserProfileRegistrationForm, self).save(*args, **kw)

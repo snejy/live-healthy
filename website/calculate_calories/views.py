@@ -29,12 +29,13 @@ def register(request):
             uform = UserRegistrationForm(data = request.POST)
             pform = UserProfileRegistrationForm(data = request.POST)
             if uform.is_valid() and pform.is_valid():
-                balance = calories(pform.cleaned_data['gender'],
+                balance = calories(
+                 pform.cleaned_data['gender'],
                  pform.cleaned_data['kilograms'], 
                  pform.cleaned_data['height'], 
                  pform.cleaned_data['age'], 
                  pform.cleaned_data['sports'])
-             
+           
                 new_user = User.objects.create_user(
                 username=uform.cleaned_data['username'],
                 password=uform.cleaned_data['password1'],

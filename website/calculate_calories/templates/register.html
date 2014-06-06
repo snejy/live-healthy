@@ -8,49 +8,64 @@
     <div class="fieldWrapper">
         <label for="id_email">Email:</label>
         {{ uform.email }}
+
     </div>
     <div class="fieldWrapper">
         {{ form.password1.errors }}
         <label for="id_username" >Password:</label>
         {{ uform.password1 }}
+
         </div>
     <div class="fieldWrapper">
         {{ form.password2.errors }}
         <label for="id_username" >Confirm password:</label>
-        {{ uform.password2 }}        
+        {{ uform.password2 }}
+        
     <div class="fieldWrapper">
         {{ uform.username.errors }}
         <label for="id_username" >Username:</label>
         {{ uform.username }}
+
     </div>
     <div class="fieldWrapper">
         {{ form.sender.errors }}
         <label for="id_first_name">First name:</label>
         {{ uform.first_name }}
+
     </div>
     <div class="fieldWrapper">
         <label for="id_last_name">Last name:</label>
        {{ uform.last_name }}
+
     </div>
     <div class="fieldWrapper">
         <label for="id_gender">Gender:</label>
         {{ pform.gender }}
+
     <div class="fieldWrapper">
         <label for="id_last_name">Age:</label>
        {{ pform.age }}
+
     </div>
     <div class="fieldWrapper">
         <label for="id_kilograms">Kilograms</label>
         {{ pform.kilograms }}
+
     </div>
     <div class="fieldWrapper">
         <label for="id_height">Height</label>
         {{ pform.height }}
+
     </div>
     <div class="fieldWrapper">
         <label for="id_sports">Sport:</label>
-        {{ pform.sports }}
-
+        <select id="id_sports" name="sports">
+        <option value='1.2'>Does not do sport.</option>
+        <option value="1.375">Does sport 1 to 3 times weekly.</option>
+        <option value='1.55'>Does sport 3 to 5 times weekly.</option>
+        <option value='1.725'>Does sport 6 to 7 times weekly.</option>
+        <option value='1.9'>Extreme active: 7 times weekly with additional activities.</option>
+        </select>
     <p><input type="submit" value="Register" /></p>
 </form> 
 {% endblock %}
