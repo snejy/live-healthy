@@ -38,12 +38,11 @@ def register(request):
                 new_user = User.objects.create_user(
                 username=uform.cleaned_data['username'],
                 password=uform.cleaned_data['password1'],
-                email=uform.cleaned_data['email'])
+                email=uform.cleaned_data['email'],
+                first_name = uform.cleaned_data['first_name'],
+                last_name = uform.cleaned_data['last_name'])
                 user_profile = UserProfile(
                 user = new_user,
-                username = uform.cleaned_data['username'],
-                first_name = pform.cleaned_data['first_name'],
-                last_name = pform.cleaned_data['last_name'],
                 gender = pform.cleaned_data['gender'],
                 age = pform.cleaned_data['age'],
                 kilograms = pform.cleaned_data['kilograms'],

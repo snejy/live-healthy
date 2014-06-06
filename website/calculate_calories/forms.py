@@ -12,6 +12,8 @@ class UserRegistrationForm(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Email address"))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Password (again)"))
+    first_name = forms.CharField(required = True,max_length = 30, error_messages={'required': 'Please enter your first name'})
+    last_name = forms.CharField(required = True,max_length = 30, error_messages={'required': 'Please enter your last name'})
 
     def clean_username(self):
         try:
@@ -31,16 +33,12 @@ class UserRegistrationForm(forms.Form):
 
 
 class UserProfileRegistrationForm(forms.Form):
-    username = forms.CharField(required = True,error_messages={'required': 'Please enter your username'})
-    first_name = forms.CharField(required = True,max_length = 30, error_messages={'required': 'Please enter your first name'})
-    last_name = forms.CharField(required = True,max_length = 30, error_messages={'required': 'Please enter your last name'})
-    gender = forms.ChoiceField(required = True)
     GENDER = (
         ('f', 'female'),
         ('m', 'male')
     )
-    gender = forms.CharField(required = True, max_length = 1)
-    # date_of_birth = forms.DateField(required = True)    
+    gender = forms.ChoiceField(required = True, choices=GENDER)
+    # gender = forms.CharField(required = True, max_length = 1)
     kilograms = forms.IntegerField(required = True)
     age = forms.IntegerField(required = True)
     height = forms.IntegerField(required = True)
@@ -51,7 +49,7 @@ class UserProfileRegistrationForm(forms.Form):
         (1.725, "Does sport 6 to 7 times weekly."),
         (1.9, "Extreme active: 7 times weekly with additional activities.")
     )
-    sports = forms.FloatField(required = True)
+    sports = forms.ChoiceField(required = True, choices=SPORTS)
 
     def save(self, *args, **kw):
         super(UserProfileRegistrationForm, self).save(*args, **kw)

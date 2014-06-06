@@ -7,10 +7,6 @@ from datetime import datetime
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    username = models.CharField(default = 'admin',max_length = 30)
-    email = models.EmailField(max_length = 30)
-    first_name = models.CharField(max_length = 30)
-    last_name = models.CharField(max_length = 30)
     GENDER = (
         ('f', 'female'),
         ('m', 'male')
@@ -18,7 +14,6 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length = 1,
                               choices = GENDER,
                               default = 'f')
-    # date_of_birth = models.DateField(blank = False)
     age = models.PositiveIntegerField(null = True)
     kilograms = models.PositiveIntegerField(null = True)
     height = models.PositiveIntegerField(null = True)
@@ -31,6 +26,7 @@ class UserProfile(models.Model):
     )
     sports = models.FloatField(null = True, choices = SPORTS )
     calorie_balance = models.PositiveIntegerField(default = 0)
+    date_joined = models.DateTimeField(default = datetime.now(), auto_now_add = True, null = True)
     objects = UserManager()
 
     def __unicode__(self):
