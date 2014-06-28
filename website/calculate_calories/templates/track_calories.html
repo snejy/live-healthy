@@ -4,6 +4,66 @@
 
 <p> Hello, {{ user.first_name }} {{ user.last_name }}!</p>
 
-<p> Your calories left for today until you reach your maximum are {{ user_profile.calorie_balance }}. </p>
+<p> Your calorie maximum is {{ user_profile.calorie_balance }}. </p>
+<p> Today you consumated: </p>
+
+{% for food in food_today %}
+
+    </br>
+
+    {{ food }}
+
+{% endfor %}
+
+{% if cal > 0 %}
+
+<p> You have {{ cal }} calories left.</p>
+
+{% else %}
+
+<p> You've reached your calories maximum and have {{ cal }} calories over the line.</p>
+
+{% endif %}
+
+
+<p> Add more:</p>
+
+<form action="/track_calories/" method="post">
+
+{% csrf_token %}
+{{ form.as_p }}
+
+</br>
+
+<input type="submit" />
+</form>
+
+<hr>
+{% if cal > 0 %}
+<p>Need help with figuring out what to eat?</p>
+
+<form action="/track_calories/" method="post">
+
+{% csrf_token %}
+{{ sform.as_p}}
+
+<input type="submit" />
+</form>
+
+{% if combinations %}
+<p>You can consumate:</p>
+{% for combination in combinations %}
+
+    </br>
+    {{ combination }}
+
+{% endfor %}
+
+{% endif %}
+
+{% else %}
+<p> You have already reached your maximum.</p>
+
+{% endif %}
 
 {% endblock %}
