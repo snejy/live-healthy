@@ -15,8 +15,3 @@ Then users will have the opportunity to choose in which category they consider t
 
 * <b> User categories: </b> are depending on the sport activity one does.
 
-Goals for milestone 2
-==============
-  * To have working login for users and more clear categories
-  * To have working calculator for the calories of the registered users depending on gender, years etc.
-
