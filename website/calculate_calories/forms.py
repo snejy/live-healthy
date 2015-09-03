@@ -1,57 +1,45 @@
+import re
 
 from django import forms
 from django.contrib.auth.models import User
-from calculate_calories.formfields import ChoiceField
 from django.utils.translation import ugettext_lazy as _
-from calculate_calories.models import UserProfile, Food, Users_Food, Temp
-import re
-from django import forms
-from django.utils.translation import ugettext_lazy as _
+
+from .models import UserProfile, Food, Consumation, Temp
+from .formfields import ChoiceField
 
 
 class UserRegistrationForm(forms.Form):
-    username = forms.RegexField(regex=r'^\w+$',
-      widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
-      label=_("Username"),
-      error_messages={'invalid': _("This value must contain only" +
-                                   "letters, numbers and underscores.")})
-    email = forms.EmailField(widget=forms.TextInput(attrs=dict(required=True,
-                                                               max_length=30)),
-                             label=_("Email address"))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs=dict(
-                                required=True,
-                                max_length=30,
-                                render_value=False)),
-                                label=_("Password"))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs=dict(
-                                required=True,
-                                max_length=30,
-                                render_value=False)),
-                                label=_("Password (again)"))
-    first_name = forms.CharField(required=True,
-                                 max_length=30,
-                                 error_messages={'required':
-                                                 'Please enter' +
-                                                 'your first name'})
-    last_name = forms.CharField(required=True, max_length=30,
-                                error_messages={'required': 'Please enter' +
-                                                'your last name'})
+    username = forms.CharField(label=_('Username'), max_length=50)
+    email = forms.EmailField(label=_("Email address"))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs=dict(
+        required=True,
+        max_length=30,
+        render_value=False)),
+        label=_("Password"))
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput(attrs=dict(
+        required=True,
+        max_length=30,
+        render_value=False)),
+        label=_("Password (again)")
+        )
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
 
     def clean_username(self):
+        username = self.cleaned_data.get('username')
         try:
-            user = User.objects.get(username__iexact=
-                                    self.cleaned_data['username'])
+            user = User.objects.get(username__iexact=username)
         except User.DoesNotExist:
-            return self.cleaned_data['username']
-        raise forms.ValidationError(_("The username already exists. Please" +
-                                      "try another one."))
+            return username
+        raise forms.ValidationError(_("The username already exists. Please try another one."))
 
     def clean(self):
-        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
-            if self.cleaned_data['password1'] != self.cleaned_data['pass' +
-                                                                   'word2']:
-                raise forms.ValidationError(_("The two password fields did" +
-                                              " not match."))
+        password = self.cleaned_data.get('password')
+        password_confirm = self.cleaned_data.get('password_confirm')
+        if password != password_confirm:
+            raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
 
     class Meta:
@@ -63,10 +51,6 @@ class UserProfileRegistrationForm(forms.Form):
         ('f', 'female'),
         ('m', 'male')
     )
-    gender = forms.ChoiceField(required=True, choices=GENDER)
-    kilograms = forms.IntegerField(required=True)
-    age = forms.IntegerField(required=True)
-    height = forms.IntegerField(required=True)
     SPORTS = (
         (1.2, "Does not do sport."),
         (1.375, "Does sport 1 to 3 times weekly."),
@@ -74,6 +58,10 @@ class UserProfileRegistrationForm(forms.Form):
         (1.725, "Does sport 6 to 7 times weekly."),
         (1.9, "Extreme active: 7 times weekly with additional activities.")
     )
+    gender = forms.ChoiceField(required=True, choices=GENDER)
+    kilograms = forms.IntegerField(required=True)
+    age = forms.IntegerField(required=True)
+    height = forms.IntegerField(required=True)
     sports = forms.FloatField(required=True)
 
     def save(self, *args, **kw):
@@ -92,15 +80,15 @@ class UserProfileRegistrationForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.RegexField(regex=r'^\w+$',
-        widget=forms.TextInput(attrs=dict(required=True,
-                                          max_length=30)),
-                               label=_("Username"),
-                               error_messages={'invalid': _("This value must" +
-                                                            " contain only" +
-                                                            " letters," +
-                                                            " numbers and " +
-                                                            " underscores.")})
+    username = forms.RegexField(
+        regex=r'^\w+$',
+        label=_("Username"),
+        widget=forms.TextInput(
+            attrs=dict(required=True, max_length=30,)
+            ),
+        error_messages={'invalid':
+                      _("This value must contain only letters, numbers and underscores.")}
+        )
     password = forms.CharField(widget=forms.PasswordInput(attrs=dict(
                                required=True,
                                max_length=30,
@@ -114,11 +102,15 @@ class CaloriesForm(forms.Form):
 
 
 class WhatToEatForm(forms.Form):
-    food = forms.ModelMultipleChoiceField(queryset=Food.objects.all(),
-                                          widget=forms.CheckboxSelectMultiple)
+    food = forms.ModelMultipleChoiceField(
+        queryset=Food.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        )
     amount = forms.IntegerField(required=True)
-    another_food = forms.ModelMultipleChoiceField(queryset=Food.objects.all(),
-                                          widget=forms.CheckboxSelectMultiple)
+    another_food = forms.ModelMultipleChoiceField(
+        queryset=Food.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        )
     another_amount = forms.IntegerField(required=True)
 
     class Meta:

@@ -1,28 +1,27 @@
-from django.shortcuts import render, redirect
+from datetime import datetime
+
 from django.http import HttpResponseRedirect
-from calculate_calories.forms import WhatToEatForm, LoginForm, CaloriesForm
-from calculate_calories.forms import UserRegistrationForm
-from calculate_calories.models import Temp, UserProfile, Food, Users_Food
-from calculate_calories.forms import UserProfileRegistrationForm
+from django.shortcuts import render, redirect, render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from calculate_calories.helper import add_food_in_db, get_2_combinations, calories, combine
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
-from datetime import datetime
 from django.db import IntegrityError
+
+from calculate_calories.models import Temp, UserProfile, Food, Consumation
+from calculate_calories.forms import UserProfileRegistrationForm, UserRegistrationForm, WhatToEatForm, LoginForm, CaloriesForm
+from calculate_calories.helper import add_food_in_db, get_2_combinations, calories, combine
 
 
 def home(request):
-   return render(request, 'home.html', locals())
+   return render(request, 'home.html')
 
 
 def about(request):
-   return render(request, 'about.html', locals())
+   return render(request, 'about.html')
 
 
 @csrf_protect
@@ -56,25 +55,21 @@ def register(request):
                 user_profile.save()
                 return HttpResponseRedirect('/home/')
         else:
-            uform = UserRegistrationForm(data=request.POST)
-            pform = UserProfileRegistrationForm(data=request.POST)
+            uform = UserRegistrationForm()
+            pform = UserProfileRegistrationForm()
         variables = RequestContext(request, {
                                 'uform': uform,
                                 'pform': pform
         })
-
-        return render_to_response(
-        'register.html',
-        variables,
-        )
+        return render_to_response('register.html', variables)
     else:
-        return HttpResponseRedirect('/profile/')
+        return HttpResponseRedirect('profile')
 
 
 def track_calories(request):
     if request.user.is_authenticated():
         user_profile = UserProfile.objects.get(user=request.user)
-        foods = Users_Food.objects.filter(user_id=user_profile)
+        foods = Consumation.objects.filter(user_id=user_profile)
 
         combinations = Temp.objects.all()
         if len(combinations) > 0:
@@ -95,7 +90,7 @@ def track_calories(request):
             food = form.cleaned_data['food_name']
             food_calories = food.first().calories_per_100gr
             calories = form.cleaned_data['amount_of_food'] / 100 * food_calories
-            user_food = Users_Food(
+            user_food = Consumation(
             user_id=user_profile,
             food_id=food.first(),
             amount_of_food=form.cleaned_data['amount_of_food'],
@@ -151,11 +146,6 @@ def track_calories(request):
 
 
 def login(request):
-    try:
-        add_food_in_db()
-    except IntegrityError as e:
-        return HttpResponseRedirect('/login/')
-
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
@@ -168,19 +158,11 @@ def login(request):
                 else:
                     print("The password is valid, but the account has been disabled!")
             else:
-                # the authentication system was unable to verify the username and password
                 print("The username and password were incorrect.")
             return HttpResponseRedirect('/home/')
     else:
-        form = LoginForm(data=request.POST)
-    variables = RequestContext(request, {
-    'form': form
-    })
-
-    return render_to_response(
-    'login.html',
-    variables,
-    )
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
 
 @login_required
